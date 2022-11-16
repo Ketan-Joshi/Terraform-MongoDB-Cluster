@@ -89,10 +89,10 @@ service mongod restart
 service mongod status
 
 if [ $MONGO_NODE_TYPE == "primary" ]; then
-  sleep 60
+  sleep 120
   mongo < ./cluster_setup.js
   service mongod restart
-  sleep 60
+  sleep 120
   mongo < ./user_setup.js
   rm -f user_setup.js
 fi
