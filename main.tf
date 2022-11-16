@@ -2,7 +2,6 @@ module mongodb {
   source = "./mongodb_module"
   region = var.region
   profile = var.profile
-  instance_prefix = var.instance_prefix
   secondary_node_type = var.secondary_node_type
   primary_node_type = var.primary_node_type
   jumpbox_instance_type = var.jumpbox_instance_type

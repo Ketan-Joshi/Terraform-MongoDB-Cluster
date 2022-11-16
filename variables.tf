@@ -4,10 +4,6 @@ variable "region" {
 variable "profile" {
   default     = "default"
 }
-variable "instance_prefix" {
-  description = "Name to instance"
-  default     = "mongo-"
-}
 variable "secondary_node_type" {
   description = "Instance AWS type"
   default     = "t2.micro"

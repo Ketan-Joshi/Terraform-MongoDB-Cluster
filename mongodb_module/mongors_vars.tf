@@ -1,6 +1,5 @@
 variable "region" {}
 variable "profile" {}
-variable "instance_prefix" {}
 variable "secondary_node_type" {}
 variable "primary_node_type" {}
 variable "jumpbox_instance_type" {}
