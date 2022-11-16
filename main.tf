@@ -1,6 +1,7 @@
 module mongodb {
   source = "./mongodb_module"
   region = var.region
+  profile = var.profile
   instance_ami = var.instance_ami
   instance_prefix = var.instance_prefix
   secondary_node_type = var.secondary_node_type
@@ -12,7 +13,8 @@ module mongodb {
   mongo_subnet_ids = var.mongo_subnet_ids
   jumpbox_subnet_ids = var.jumpbox_subnet_ids
   vpc_cidr_block = var.vpc_cidr_block
-  sg_name = var.sg_name
+  jumpbox_sg_name = var.jumpbox_sg_name
+  mongodb_sg_name = var.mongodb_sg_name
   replica_set_name = var.replica_set_name
   mongo_password = var.mongo_password
   mongo_username = var.mongo_username
