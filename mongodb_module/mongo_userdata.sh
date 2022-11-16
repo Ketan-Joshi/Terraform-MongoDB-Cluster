@@ -51,7 +51,7 @@ chown ubuntu:ubuntu /etc/systemd/system/mongod.service
 
 # System Settings for MongoDB Replica_Set
 PRIMARY_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Type,Values=primary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq .Reservations[0].Instances[0].PrivateIpAddress --raw-output)
-echo "$PRIMARY_PUBLIC_IP primary" >> /etc/hosts
+echo "$PRIMARY_PUBLIC_IP primary.${domain_name}" >> /etc/hosts
 while [ ! -f /home/ubuntu/populate_hosts_file.py ]
 do
   sleep 2
@@ -75,9 +75,9 @@ mv /home/ubuntu/parse_instance_tags.py /parse_instance_tags.py
 chmod +x populate_hosts_file.py
 chmod +x parse_instance_tags.py
 
-aws ec2 describe-instances --filters "Name=tag:Type,Values=secondary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq . | ./populate_hosts_file.py ${replica_set_name} ${mongo_database} ${mongo_username} ${mongo_password}
+aws ec2 describe-instances --filters "Name=tag:Type,Values=secondary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq . | ./populate_hosts_file.py ${replica_set_name} ${mongo_database} ${mongo_username} ${mongo_password} ${domain_name}
 INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id --silent)
-HOSTNAME=$(aws ec2 describe-instances --instance-id $INSTANCE_ID --region ${aws_region} | jq . | ./parse_instance_tags.py)
+HOSTNAME=$(aws ec2 describe-instances --instance-id $INSTANCE_ID --region ${aws_region} | jq . | ./parse_instance_tags.py ${domain_name})
 hostnamectl set-hostname $HOSTNAME
 
 MONGO_NODE_TYPE=$(aws ec2 describe-tags --filters "Name=resource-id,Values=$INSTANCE_ID" "Name=key,Values=Type" --region ${aws_region} | jq .Tags[0].Value --raw-output)

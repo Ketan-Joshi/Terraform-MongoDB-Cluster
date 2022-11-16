@@ -68,3 +68,6 @@ variable "mongo_database" {
 variable "num_secondary_nodes" {
   default = 2
 }
+variable "domain_name" {
+  default = "digital.in.cld"
+}

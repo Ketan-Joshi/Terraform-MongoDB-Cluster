@@ -16,3 +16,4 @@ variable "replica_set_name" {}
 variable "mongo_username" {}
 variable "mongo_database" {}
 variable "num_secondary_nodes" {}
+variable "domain_name" {}

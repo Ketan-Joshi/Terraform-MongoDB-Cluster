@@ -18,4 +18,5 @@ module mongodb {
   mongo_username = var.mongo_username
   mongo_database = var.mongo_database
   num_secondary_nodes = var.num_secondary_nodes
+  domain_name = var.domain_name
 }
