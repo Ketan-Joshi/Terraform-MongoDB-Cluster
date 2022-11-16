@@ -3,7 +3,8 @@
 This repository allows creating MongoDB ReplicaSet in AWS EC2 instances. It includes the following resources:
 
 - Jumpbox Instance:  
-    * We are using this to access our MongoDB servers
+    * To access our MongoDB servers
+    * To copy replication and cluster configutration files to MongoDB servers   
 - Primary MongoDB Instance
 - Secondary MongoDB Instances (you can define the count of read replicas here. For now, we are creating 2 secondary nodes)
 
@@ -29,9 +30,15 @@ This repository allows creating MongoDB ReplicaSet in AWS EC2 instances. It incl
 
 6. After applying the changes, wait for the ReplicaSet creation. This will take approx. 5-10 minutes
 
+## Add-Ons
+
+- This supports Authentication as well
+
 ## Considerations
 
 - This is the setup for Ubuntu 20.04 (for Ubuntu 22.x, no official dependency support is there for MongoDB yet)
+- This uses host entries for DNS mapping
+    * To be switched to private DNS: `To Do`
 
 References
 ---
