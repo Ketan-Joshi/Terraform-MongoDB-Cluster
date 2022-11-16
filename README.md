@@ -2,14 +2,17 @@
 
 This repository allows creating MongoDB ReplicaSet in AWS EC2 instances. It includes the following resources:
 
-- Jumpbox Instance
+- Jumpbox Instance: We are using this to access our MongoDB servers
 - Primary MongoDB Instance
 - Secondary MongoDB Instances (you can define the count of read replicas here. For now, we are creating 2 secondary nodes)
 
 ## Prequisites:
 
 1. AWS CLI must be installed and aws-profile must be already created 
-2. AWS VPC must be already configured with min. 2 private subnets (for MongoDB primary and secondary nodes), 2 public subnets (for Jumpbox), and Nat gateway
+2. AWS VPC must be already configured with min. 2 private subnets, 2 public subnets, and Nat gateway
+
+- <Public Subnets>: Jumpbox is setup here
+- <Private Subnets>: MongoDB nodes and NAT gateway
 
 ## Deploying the ReplicaSet:
 

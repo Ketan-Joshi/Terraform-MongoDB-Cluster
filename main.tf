@@ -2,7 +2,7 @@ module mongodb {
   source = "./mongodb_module"
   region = var.region
   profile = var.profile
-  instance_ami = var.instance_ami
+  instance_ami = var.instance_ami //Ubuntu 20.x
   instance_prefix = var.instance_prefix
   secondary_node_type = var.secondary_node_type
   primary_node_type = var.primary_node_type
