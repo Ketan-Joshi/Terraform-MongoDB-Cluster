@@ -4,10 +4,6 @@ variable "region" {
 variable "profile" {
   default     = "default"
 }
-variable "instance_ami" {
-  description = "Amazon linux AMI"
-  default     = "ami-0149b2da6ceec4bb0"
-}
 variable "instance_prefix" {
   description = "Name to instance"
   default     = "mongo-"
@@ -62,9 +58,6 @@ variable "jumpbox_sg_name" {
 }
 variable "replica_set_name" {
   default     = "mongoRs"
-}
-variable "mongo_password" {
-  default     = "mongo4pass"
 }
 variable "mongo_username" {
   default     = "admin"
