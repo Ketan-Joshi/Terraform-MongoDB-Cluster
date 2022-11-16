@@ -15,13 +15,15 @@ This repository allows creating MongoDB ReplicaSet in AWS EC2 instances. It incl
 
 1. Clone this repository and update the variables.tf file according to your values
 
-2. `terraform init`: It will initialize the provider block and the module
+2. Then, go to mongodb_module folder and update keyFile
 
-3. `terraform plan`: To list-down all the changes that the terraform will be performing
+3. `terraform init`: It will initialize the provider block and the module
 
-4. `terraform apply`: Apply the changes required to build MongoDB ReplicaSet
+4. `terraform plan`: To list-down all the changes that the terraform will be performing
 
-5. After applying the changes, wait for the ReplicaSet creation. This will take approx. 5-10 minutes
+5. `terraform apply`: Apply the changes required to build MongoDB ReplicaSet
+
+6. After applying the changes, wait for the ReplicaSet creation. This will take approx. 5-10 minutes
 
 ## Considerations
 
