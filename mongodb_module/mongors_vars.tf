@@ -9,10 +9,11 @@ variable "vpc_id" {}
 variable "mongo_subnet_ids" {type = map}
 variable "jumpbox_subnet_ids" {type = map}
 variable "vpc_cidr_block" {}
-variable "mongodb_sg_name" {}
-variable "jumpbox_sg_name" {}
 variable "replica_set_name" {}
 variable "mongo_username" {}
 variable "mongo_database" {}
 variable "num_secondary_nodes" {}
 variable "domain_name" {}
+variable "mongodb_admin_password_ssm_name" {}
+variable "mongodb_admin_user_ssm_name" {}
+variable "mongodb_admin_db_ssm_name" {}
