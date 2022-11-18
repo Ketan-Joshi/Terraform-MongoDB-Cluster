@@ -18,11 +18,11 @@ for reservation in data['Reservations']:
 
 if custom_domain:
     if node_type == "primary":
-        print(node_type+domain_name)
+        print("mongo1"+domain_name)
     else:
-        print(node_type+node_index+domain_name)
+        print("mongo"+str(node_index+1)+domain_name)
 else:
     if node_type == "primary":
-        print(node_type)
+        print("mongo1")
     else:
-        print(node_type+node_index)
+        print("mongo"+str(node_index+1))
