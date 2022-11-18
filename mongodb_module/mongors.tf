@@ -52,7 +52,7 @@ resource "aws_ssm_parameter" "mongodb_endpoint_ssm_parameter" {
 }
 resource "null_resource" "truncate" {
     provisioner "local-exec" {
-      command = "truncate -s 0 mongodb_endpoint.txt"
+      command = "truncate -s 0 ${path.module}/mongodb_endpoint.txt"
   }
   depends_on = [
     aws_ssm_parameter.mongodb_endpoint_ssm_parameter
