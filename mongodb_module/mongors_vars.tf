@@ -15,4 +15,4 @@ variable "mongo_username" {}
 variable "mongo_database" {}
 variable "num_secondary_nodes" {}
 variable "domain_name" {}
-variable "ssm_parameter" {}
+variable "ssm_parameter_prefix" {}

@@ -23,5 +23,5 @@ module mongodb {
   mongo_database = "admin"
   num_secondary_nodes = 2
   domain_name = "digital.in.cld"
-  ssm_parameter = "MongoDB"
+  ssm_parameter_prefix = "MongoDB"
 }
