@@ -54,15 +54,6 @@ resource "aws_ssm_parameter" "mongodb_endpoint_ssm_parameter" {
     null_resource.mongodb_endpoint
   ]
 }
-#resource "null_resource" "truncate" {
-#    provisioner "local-exec" {
-#      command = "truncate -s 0 ${path.module}/mongodb_endpoint.txt"
-#  }
-#  depends_on = [
-#    aws_ssm_parameter.mongodb_endpoint_ssm_parameter
-#  ]
-#}
-
 #############################
 # Jumpbox Instance
 #############################
