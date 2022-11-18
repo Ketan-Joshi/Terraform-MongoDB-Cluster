@@ -16,6 +16,6 @@ for reservation in data['Reservations']:
             node_index = tag["Value"][-1]
 
 if node_type == "primary":
-    print(node_type+"."+domain_name)
+    print(node_type+domain_name)
 else:
-    print(node_type+node_index+"."+domain_name)
+    print(node_type+node_index+domain_name)

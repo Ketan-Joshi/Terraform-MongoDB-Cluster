@@ -13,7 +13,7 @@ mongo_username = sys.argv[3]
 mongo_pasword = sys.argv[4]
 domain_name = sys.argv[5]
 
-config = {"_id": replica_set_name, "members": [{ "_id": 0, "host": "primary."+domain_name+":27017", "priority": 1000 }]}
+config = {"_id": replica_set_name, "members": [{ "_id": 0, "host": "primary"+domain_name+":27017", "priority": 1000 }]}
 
 secondary_nodes = []
 
@@ -24,7 +24,7 @@ for reservation in data['Reservations']:
         if tag["Key"] == "Name":
             node_index = tag["Value"][-1]
             secondary_node_without_dns = "secondary{0}".format(node_index)
-            secondary_node_with_dns = secondary_node_without_dns+"."+domain_name
+            secondary_node_with_dns = secondary_node_without_dns+domain_name
             config["members"].append({"_id": int(node_index), "host": secondary_node_with_dns+":27017", "priority": 0.5})
             with open('/etc/hosts', 'a') as f:
                 secondary_nodes.append([secondary_node_with_dns, False])
