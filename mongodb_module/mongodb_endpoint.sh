@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# Removing old data
+truncate -s 0 $3/mongodb_endpoint.txt
+
+# Adding new data
 if [ $4 = true ]
 then
     echo -n "mongo1$1, " >> $3/mongodb_endpoint.txt
