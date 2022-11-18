@@ -75,26 +75,27 @@ mv /home/ubuntu/parse_instance_tags.py /parse_instance_tags.py
 chmod +x populate_hosts_file.py
 chmod +x parse_instance_tags.py
 
-aws ec2 describe-instances --filters "Name=tag:Type,Values=secondary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq . | ./populate_hosts_file.py ${replica_set_name} ${mongo_database} ${mongo_username} ${mongo_password} ${domain_name}
+aws ec2 describe-instances --filters "Name=tag:Type,Values=secondary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq . | ./populate_hosts_file.py ${replica_set_name} ${mongo_database} ${mongo_username} ${mongo_password} ${domain_name} ${custom_domain}
 INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id --silent)
-HOSTNAME=$(aws ec2 describe-instances --instance-id $INSTANCE_ID --region ${aws_region} | jq . | ./parse_instance_tags.py ${domain_name})
+HOSTNAME=$(aws ec2 describe-instances --instance-id $INSTANCE_ID --region ${aws_region} | jq . | ./parse_instance_tags.py ${domain_name} ${custom_domain})
 hostnamectl set-hostname $HOSTNAME
 
 MONGO_NODE_TYPE=$(aws ec2 describe-tags --filters "Name=resource-id,Values=$INSTANCE_ID" "Name=key,Values=Type" --region ${aws_region} | jq .Tags[0].Value --raw-output)
 
 systemctl enable mongod.service
 
-service mongod start
-service mongod restart
-service mongod status
+systemctl start mongod.service
+systemctl status
 
 if [ $MONGO_NODE_TYPE == "primary" ]; then
   sleep 120
   mongo < ./cluster_setup.js
-  service mongod restart
+  systemctl restart mongod.service
   sleep 120
   mongo < ./user_setup.js
   rm -f user_setup.js
+  systemctl restart mongod.service
 fi
 
-service mongod restart
+sleep 120
+systemctl restart mongod.service

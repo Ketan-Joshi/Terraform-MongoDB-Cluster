@@ -12,25 +12,45 @@ mongo_database = sys.argv[2]
 mongo_username = sys.argv[3]
 mongo_pasword = sys.argv[4]
 domain_name = sys.argv[5]
+custom_domain = sys.argv[6]
 
-config = {"_id": replica_set_name, "members": [{ "_id": 0, "host": "primary."+domain_name+":27017", "priority": 1000 }]}
+if custom_domain:
+    config = {"_id": replica_set_name, "members": [{ "_id": 0, "host": "primary"+domain_name+":27017", "priority": 1000 }]}
 
-secondary_nodes = []
+    secondary_nodes = []
 
-for reservation in data['Reservations']:
-    private_ip = reservation["Instances"][0]["PrivateIpAddress"]
-    tags = reservation["Instances"][0]["Tags"]
-    for tag in tags:
-        if tag["Key"] == "Name":
-            node_index = tag["Value"][-1]
-            secondary_node_without_dns = "secondary{0}".format(node_index)
-            secondary_node_with_dns = secondary_node_without_dns+"."+domain_name
-            config["members"].append({"_id": int(node_index), "host": secondary_node_with_dns+":27017", "priority": 0.5})
-            with open('/etc/hosts', 'a') as f:
-                secondary_nodes.append([secondary_node_with_dns, False])
-                f.writelines('{0} '.format(private_ip)+secondary_node_with_dns+'\n')
+    for reservation in data['Reservations']:
+        private_ip = reservation["Instances"][0]["PrivateIpAddress"]
+        tags = reservation["Instances"][0]["Tags"]
+        for tag in tags:
+            if tag["Key"] == "Name":
+                node_index = tag["Value"][-1]
+                secondary_node_without_dns = "secondary{0}".format(node_index)
+                secondary_node_with_dns = secondary_node_without_dns+domain_name
+                config["members"].append({"_id": int(node_index), "host": secondary_node_with_dns+":27017", "priority": 0.5})
+                with open('/etc/hosts', 'a') as f:
+                    secondary_nodes.append([secondary_node_with_dns, False])
+                    f.writelines('{0} '.format(private_ip)+secondary_node_with_dns+'\n')
 
-allPassed = False
+    allPassed = False
+else:
+    config = {"_id": replica_set_name, "members": [{ "_id": 0, "host": "primary:27017", "priority": 1000 }]}
+
+    secondary_nodes = []
+
+    for reservation in data['Reservations']:
+        private_ip = reservation["Instances"][0]["PrivateIpAddress"]
+        tags = reservation["Instances"][0]["Tags"]
+        for tag in tags:
+            if tag["Key"] == "Name":
+                node_index = tag["Value"][-1]
+                secondary_node_without_dns = "secondary{0}".format(node_index)
+                config["members"].append({"_id": int(node_index), "host": secondary_node_without_dns+":27017", "priority": 0.5})
+                with open('/etc/hosts', 'a') as f:
+                    secondary_nodes.append([secondary_node_without_dns, False])
+                    f.writelines('{0} '.format(private_ip)+secondary_node_without_dns+'\n')
+
+    allPassed = False   
 
 while allPassed != True:
     time.sleep(5)
