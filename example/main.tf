@@ -8,7 +8,7 @@ module mongodb {
   instance_user = "ubuntu"
   key_name = "mongo"
   vpc_id = "vpc-0c1f5b4a4078b3323"
-  environment = "dev"
+  environment = "DEV"
   mongo_subnet_ids = {
     "us-east-1" = "subnet-0569ea294831bb782"
     "us-east-1" = "subnet-021140f7aa982054a"
@@ -22,7 +22,7 @@ module mongodb {
   mongo_username = "admin"
   mongo_database = "admin"
   num_secondary_nodes = 2
-  custom_domain = true
+  custom_domain = false
   domain_name = ".digital.in.cld" // This variable will only work when the "custom_domain" variable is set to "true". Its must start with a '.'.
   ssm_parameter_prefix = "MongoDB"
 }
