@@ -25,7 +25,7 @@ if custom_domain:
         for tag in tags:
             if tag["Key"] == "Name":
                 node_index = tag["Value"][-1]
-                secondary_node_without_dns = "mongo{0}".format(node_index+1)
+                secondary_node_without_dns = "mongo{0}".format(str(int(node_index)+1))
                 secondary_node_with_dns = secondary_node_without_dns+domain_name
                 config["members"].append({"_id": int(node_index), "host": secondary_node_with_dns+":27017", "priority": 0.5})
                 with open('/etc/hosts', 'a') as f:
@@ -44,7 +44,7 @@ else:
         for tag in tags:
             if tag["Key"] == "Name":
                 node_index = tag["Value"][-1]
-                secondary_node_without_dns = "mongo{0}".format(node_index+1)
+                secondary_node_without_dns = "mongo{0}".format(str(int(node_index)+1))
                 config["members"].append({"_id": int(node_index), "host": secondary_node_without_dns+":27017", "priority": 0.5})
                 with open('/etc/hosts', 'a') as f:
                     secondary_nodes.append([secondary_node_without_dns, False])
