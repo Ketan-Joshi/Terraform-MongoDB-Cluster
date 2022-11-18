@@ -51,7 +51,7 @@ chown ubuntu:ubuntu /etc/systemd/system/mongod.service
 
 # System Settings for MongoDB Replica_Set
 PRIMARY_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Type,Values=primary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq .Reservations[0].Instances[0].PrivateIpAddress --raw-output)
-echo "$PRIMARY_PUBLIC_IP primary${domain_name}" >> /etc/hosts
+echo "$PRIMARY_PUBLIC_IP mongo1${domain_name}" >> /etc/hosts
 while [ ! -f /home/ubuntu/populate_hosts_file.py ]
 do
   sleep 2
