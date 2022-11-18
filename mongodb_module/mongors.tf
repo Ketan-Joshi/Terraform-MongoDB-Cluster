@@ -42,7 +42,7 @@ resource "aws_ssm_parameter" "mongodb_admin_db" {
 }
 resource "null_resource" "mongodb_endpoint" {
     provisioner "local-exec" {
-      command = "/bin/bash ${path.module}/mongodb_endpoint.sh ${var.domain_name} ${var.num_secondary_nodes} ${path.module}"
+      command = "/bin/bash ${path.module}/mongodb_endpoint.sh ${var.domain_name} ${var.num_secondary_nodes} ${path.module} ${var.custom_domain}"
   }
 }
 resource "aws_ssm_parameter" "mongodb_endpoint_ssm_parameter" {
@@ -123,6 +123,7 @@ data "template_file" "userdata" {
     mongo_username = "${var.mongo_username}"
     mongo_database = "${var.mongo_database}"
     domain_name = "${var.domain_name}"
+    custom_domain = "${var.custom_domain}"
     aws_region = "${var.region}"
   }
 }

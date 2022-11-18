@@ -6,6 +6,7 @@ import sys
 data = json.load(sys.stdin)
 
 domain_name = sys.argv[1]
+custom_domain = sys.argv[2]
 
 for reservation in data['Reservations']:
     tags = reservation["Instances"][0]["Tags"]
@@ -15,7 +16,13 @@ for reservation in data['Reservations']:
         if tag["Key"] == "Name":
             node_index = tag["Value"][-1]
 
-if node_type == "primary":
-    print(node_type+domain_name)
+if custom_domain:
+    if node_type == "primary":
+        print(node_type+domain_name)
+    else:
+        print(node_type+node_index+domain_name)
 else:
-    print(node_type+node_index+domain_name)
+    if node_type == "primary":
+        print(node_type)
+    else:
+        print(node_type+node_index)

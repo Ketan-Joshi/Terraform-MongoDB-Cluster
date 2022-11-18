@@ -14,5 +14,6 @@ variable "replica_set_name" {}
 variable "mongo_username" {}
 variable "mongo_database" {}
 variable "num_secondary_nodes" {}
+variable "custom_domain" { type = bool }
 variable "domain_name" {}
 variable "ssm_parameter_prefix" {}
