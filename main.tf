@@ -8,6 +8,7 @@ module mongodb {
   instance_user = "ubuntu"
   key_name = "mongo"
   vpc_id = "vpc-0c1f5b4a4078b3323"
+  environment = "dev"
   mongo_subnet_ids = {
     "us-east-1" = "subnet-0569ea294831bb782"
     "us-east-1" = "subnet-021140f7aa982054a"
@@ -22,8 +23,5 @@ module mongodb {
   mongo_database = "admin"
   num_secondary_nodes = 2
   domain_name = "digital.in.cld"
-  mongodb_admin_password_ssm_name = "mongodb_admin_password" // SSM parameter will be creatd with this name
-  mongodb_admin_user_ssm_name = "mongodb_admin_user" // SSM parameter will be creatd with this name
-  mongodb_admin_db_ssm_name = "mongodb_admin_db" // SSM parameter will be creatd with this name
-  mongodb_domain_ssm_name = "mongodb_domain" // SSM parameter will be creatd with this name
+  ssm_parameter = "MongoDB"
 }
