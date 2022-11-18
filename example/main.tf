@@ -1,5 +1,5 @@
 module mongodb {
-  source = "./mongodb_module"
+  source = "../"
   region = "us-east-1"
   profile = "default"
   secondary_node_type = "t2.micro"
