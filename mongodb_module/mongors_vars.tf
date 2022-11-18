@@ -17,3 +17,4 @@ variable "domain_name" {}
 variable "mongodb_admin_password_ssm_name" {}
 variable "mongodb_admin_user_ssm_name" {}
 variable "mongodb_admin_db_ssm_name" {}
+variable "mongodb_domain_ssm_name" {}

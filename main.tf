@@ -22,7 +22,8 @@ module mongodb {
   mongo_database = "admin"
   num_secondary_nodes = 2
   domain_name = "digital.in.cld"
-  mongodb_admin_password_ssm_name = "mongodb_admin_password"
-  mongodb_admin_user_ssm_name = "mongodb_admin_user"
-  mongodb_admin_db_ssm_name = "mongodb_admin_db"
+  mongodb_admin_password_ssm_name = "mongodb_admin_password" // SSM parameter will be creatd with this name
+  mongodb_admin_user_ssm_name = "mongodb_admin_user" // SSM parameter will be creatd with this name
+  mongodb_admin_db_ssm_name = "mongodb_admin_db" // SSM parameter will be creatd with this name
+  mongodb_domain_ssm_name = "mongodb_domain" // SSM parameter will be creatd with this name
 }
