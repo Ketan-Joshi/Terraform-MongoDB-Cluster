@@ -84,17 +84,18 @@ MONGO_NODE_TYPE=$(aws ec2 describe-tags --filters "Name=resource-id,Values=$INST
 
 systemctl enable mongod.service
 
-service mongod start
-service mongod restart
-service mongod status
+systemctl start mongod.service
+systemctl status
 
 if [ $MONGO_NODE_TYPE == "primary" ]; then
   sleep 120
   mongo < ./cluster_setup.js
-  service mongod restart
+  systemctl restart mongod.service
   sleep 120
   mongo < ./user_setup.js
   rm -f user_setup.js
+  systemctl restart mongod.service
 fi
 
-service mongod restart
+sleep 120
+systemctl restart mongod.service
