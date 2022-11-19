@@ -48,10 +48,17 @@ WantedBy=multi-user.target
 EOL
 chown ubuntu:ubuntu /etc/systemd/system/mongod.service
 
+# Waiting for primary MongoDB server to come in running state 
+aws ec2 wait instance-running  --filters "Name=tag:Type,Values=primary" --region ${aws_region}
 
 # System Settings for MongoDB Replica_Set
-PRIMARY_PUBLIC_IP=$(aws ec2 describe-instances --filters "Name=tag:Type,Values=primary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq .Reservations[0].Instances[0].PrivateIpAddress --raw-output)
-echo "$PRIMARY_PUBLIC_IP mongo1${domain_name}" >> /etc/hosts
+primary_private_fqdn=$(aws ec2 describe-instances --filters "Name=tag:Type,Values=primary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq .Reservations[0].Instances[0].PrivateDnsName --raw-output)
+primary_private_ip=$(aws ec2 describe-instances --filters "Name=tag:Type,Values=primary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq .Reservations[0].Instances[0].PrivateIpAddress --raw-output)
+if [ $custom_domain = true ]
+then
+  echo "$primary_private_ip mongo1${domain_name}" >> /etc/hosts
+fi
+
 while [ ! -f /home/ubuntu/populate_hosts_file.py ]
 do
   sleep 2
@@ -75,10 +82,14 @@ mv /home/ubuntu/parse_instance_tags.py /parse_instance_tags.py
 chmod +x populate_hosts_file.py
 chmod +x parse_instance_tags.py
 
-aws ec2 describe-instances --filters "Name=tag:Type,Values=secondary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq . | ./populate_hosts_file.py ${replica_set_name} ${mongo_database} ${mongo_username} ${mongo_password} ${domain_name} ${custom_domain}
+aws ec2 describe-instances --filters "Name=tag:Type,Values=secondary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq . | ./populate_hosts_file.py ${replica_set_name} ${mongo_database} ${mongo_username} ${mongo_password} ${domain_name} ${custom_domain} ${primary_private_fqdn}
 INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id --silent)
-HOSTNAME=$(aws ec2 describe-instances --instance-id $INSTANCE_ID --region ${aws_region} | jq . | ./parse_instance_tags.py ${domain_name} ${custom_domain})
-hostnamectl set-hostname $HOSTNAME
+
+if [ $custom_domain = true ]
+then
+  HOSTNAME=$(aws ec2 describe-instances --instance-id $INSTANCE_ID --region ${aws_region} | jq . | ./parse_instance_tags.py ${domain_name} ${custom_domain})
+  hostnamectl set-hostname $HOSTNAME
+fi
 
 MONGO_NODE_TYPE=$(aws ec2 describe-tags --filters "Name=resource-id,Values=$INSTANCE_ID" "Name=key,Values=Type" --region ${aws_region} | jq .Tags[0].Value --raw-output)
 
@@ -89,7 +100,7 @@ systemctl status mongod.service
 
 if [ $MONGO_NODE_TYPE == "primary" ]; 
 then
-  sleep 120
+  sleep 180
   mongo < ./cluster_setup.js
   systemctl restart mongod.service
   mongo < ./user_setup.js
