@@ -86,5 +86,5 @@ if mongo_node_type == "primary":
     	Description='MongoDB Endpoints',
     	Value=str(nodes_list),
     	Type='StringList',
-     	Overwrite=False,
+     	Overwrite=True,
     )
