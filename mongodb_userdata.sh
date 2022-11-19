@@ -82,7 +82,7 @@ mv /home/ubuntu/parse_instance_tags.py /parse_instance_tags.py
 chmod +x populate_hosts_file.py
 chmod +x parse_instance_tags.py
 
-aws ec2 describe-instances --filters "Name=tag:Type,Values=secondary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq . | ./populate_hosts_file.py ${replica_set_name} ${mongo_database} ${mongo_username} ${mongo_password} ${domain_name} ${custom_domain} ${primary_private_fqdn}
+aws ec2 describe-instances --filters "Name=tag:Type,Values=secondary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq . | ./populate_hosts_file.py ${replica_set_name} ${mongo_database} ${mongo_username} ${mongo_password} ${domain_name} ${custom_domain} $primary_private_fqdn
 INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id --silent)
 
 if [ $custom_domain = true ]
