@@ -99,11 +99,18 @@ systemctl status mongod.service
 
 if [ $MONGO_NODE_TYPE == "primary" ]; 
 then
-  sleep 180
+  sleep 120
   mongo < ./cluster_setup.js
   systemctl restart mongod.service
-  mongo < ./user_setup.js
-  rm -f user_setup.js
-  systemctl restart mongod.service
-  systemctl status mongod.service
 fi
+
+systemctl start mongod.service
+
+if [ $MONGO_NODE_TYPE == "primary" ]; 
+then
+  sleep 60
+  mongo < ./user_setup.js
+  systemctl restart mongod.service
+fi
+
+systemctl start mongod.service
