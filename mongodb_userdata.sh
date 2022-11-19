@@ -95,24 +95,29 @@ then
 fi
 
 systemctl enable mongod.service
-
-systemctl start mongod.service
-systemctl status mongod.service
-
-if [ $MONGO_NODE_TYPE == "primary" ]; 
-then
-  sleep 120
-  mongo < ./cluster_setup.js
-  systemctl restart mongod.service
-fi
-
 systemctl start mongod.service
 
 if [ $MONGO_NODE_TYPE == "primary" ]; 
 then
   sleep 60
-  mongo < ./user_setup.js
+  until mongo < ./cluster_setup.js
+  do
+    echo "Retrying Cluster Setup....."
+    systemctl restart mongod.service
+  done
   systemctl restart mongod.service
+  until mongo < ./user_setup.js
+  do
+    echo "Retrying Admin User Setup....."
+    systemctl restart mongod.service
+  done
 fi
 
-systemctl start mongod.service
+if [ $MONGO_NODE_TYPE == "secondary" ]; 
+then
+  until systemctl start mongod.service
+  do
+    echo "Restarting Mongod Service....."
+    systemctl restart mongod.service
+  done
+fi
