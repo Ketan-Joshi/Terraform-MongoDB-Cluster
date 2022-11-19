@@ -16,7 +16,7 @@ for reservation in data['Reservations']:
         if tag["Key"] == "Name":
             node_index = tag["Value"][-1]
 
-if custom_domain:
+if custom_domain == "true":
     if node_type == "primary":
         print("mongo1" + domain_name)
     else:

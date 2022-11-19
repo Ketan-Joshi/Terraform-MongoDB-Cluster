@@ -14,11 +14,9 @@ mongo_pasword = sys.argv[4]
 domain_name = sys.argv[5]
 custom_domain = sys.argv[6]
 
-if custom_domain:
+if custom_domain == "true":
     config = {"_id": replica_set_name, "members": [{ "_id": 0, "host": "mongo1"+domain_name+":27017", "priority": 1000 }]}
-
     secondary_nodes = []
-
     for reservation in data['Reservations']:
         private_ip = reservation["Instances"][0]["PrivateIpAddress"]
         tags = reservation["Instances"][0]["Tags"]
@@ -31,13 +29,10 @@ if custom_domain:
                 with open('/etc/hosts', 'a') as f:
                     secondary_nodes.append([secondary_node_with_dns, False])
                     f.writelines('{0} '.format(private_ip)+secondary_node_with_dns+'\n')
-
     allPassed = False
 else:
     config = {"_id": replica_set_name, "members": [{ "_id": 0, "host": "mongo1:27017", "priority": 1000 }]}
-
     secondary_nodes = []
-
     for reservation in data['Reservations']:
         private_ip = reservation["Instances"][0]["PrivateIpAddress"]
         tags = reservation["Instances"][0]["Tags"]
@@ -49,7 +44,6 @@ else:
                 with open('/etc/hosts', 'a') as f:
                     secondary_nodes.append([secondary_node_without_dns, False])
                     f.writelines('{0} '.format(private_ip)+secondary_node_without_dns+'\n')
-
     allPassed = False   
 
 while allPassed != True:
