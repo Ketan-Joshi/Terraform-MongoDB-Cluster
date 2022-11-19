@@ -52,7 +52,6 @@ chown ubuntu:ubuntu /etc/systemd/system/mongod.service
 aws ec2 wait instance-running  --filters "Name=tag:Type,Values=primary" --region ${aws_region}
 
 # System Settings for MongoDB Replica_Set
-primary_private_fqdn=$(aws ec2 describe-instances --filters "Name=tag:Type,Values=primary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq .Reservations[0].Instances[0].PrivateDnsName --raw-output)
 primary_private_ip=$(aws ec2 describe-instances --filters "Name=tag:Type,Values=primary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq .Reservations[0].Instances[0].PrivateIpAddress --raw-output)
 if [ $custom_domain = true ]
 then
@@ -82,7 +81,7 @@ mv /home/ubuntu/parse_instance_tags.py /parse_instance_tags.py
 chmod +x populate_hosts_file.py
 chmod +x parse_instance_tags.py
 
-aws ec2 describe-instances --filters "Name=tag:Type,Values=secondary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq . | ./populate_hosts_file.py ${replica_set_name} ${mongo_database} ${mongo_username} ${mongo_password} ${domain_name} ${custom_domain} $primary_private_fqdn
+aws ec2 describe-instances --filters "Name=tag:Type,Values=secondary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq . | ./populate_hosts_file.py ${replica_set_name} ${mongo_database} ${mongo_username} ${mongo_password} ${domain_name} ${custom_domain} $primary_private_ip
 INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id --silent)
 
 if [ $custom_domain = true ]
