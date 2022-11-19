@@ -46,6 +46,7 @@ resource "null_resource" "mongodb_endpoint" {
   }
 }
 resource "aws_ssm_parameter" "mongodb_endpoint_ssm_parameter" {
+  count = !var.custom_domain ? 0: 1
   name = "/${var.environment}/${var.ssm_parameter_prefix}/MONGODB_HOST"
   type  = "String"
   value = file("${path.module}/mongodb_endpoint.txt")
