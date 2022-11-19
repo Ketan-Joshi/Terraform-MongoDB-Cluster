@@ -22,7 +22,7 @@ module mongodb {
   mongo_username = "admin"
   mongo_database = "admin"
   num_secondary_nodes = 2
-  custom_domain = false
+  custom_domain = false // The value must be either "true" or "false"
   domain_name = ".digital.in.cld" // This variable will only work when the "custom_domain" variable is set to "true". Its must start with a '.'.
   ssm_parameter_prefix = "MongoDB"
 }
