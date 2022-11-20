@@ -101,7 +101,10 @@ if [ $MONGO_NODE_TYPE == "primary" ];
 then
   sleep 120
   mongo < ./cluster_setup.js
+  
   systemctl restart mongod.service
+
+  sleep 120
   mongo < ./user_setup.js
 fi
 
