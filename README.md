@@ -16,6 +16,28 @@ This repository allows creating MongoDB ReplicaSet in AWS EC2 instances. It incl
 - `Public Subnets`: Jumpbox is setup here
 - `Private Subnets`: MongoDB nodes and NAT gateway
 
+## Input
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| secondary\_node\_type | Instance type of Slave MongoDB Nodes | `string` | `t2.micro` | yes |
+| primary\_node\_type | Instance type of Master MongoDB Node | `string` | `t2.micro` | yes |
+| jumpbox\_instance\_type | Instance type of Bastion Server| `string` | `t2.nano` | yes |
+| instance\_user | SSH Username | `string` | `ubuntu` | yes |
+| key\_name | pem key file to ssh into servers | `string` | `mongo` | yes |
+| vpc\_id | VPC ID where you want to launch your servers | `string` | `NA` | yes |
+| environment | Environment Tag Name | `string` | `DEV` | yes |
+| mongo\_subnet\_ids | List of Subnet Ids where MongoDB will be running (should be private) | `list` | `NA` | yes |
+| jumpbox\_subnet\_ids | Subnet IDs where Bastion Server will be running (should be public) | `list` | `NA` | yes |
+| vpc\_cidr\_block | This is for Security Group egress rules | `string` | `0.0.0.0/0` | yes |
+| replica\_set\_name | Name of the MongoDB Replicaset which will be created  | `string` | `MongoRs` | yes |
+| mongo\_username | MongoDB Username | `string` | `admin` | yes |
+| mongo\_database | MongoDB Database | `string` | `admin` | yes |
+| num\_secondary\_nodes| Number of Slave MongoDB Nodes | `integer` | `2` | yes |
+| custom\_domain | If "true", then the custom domain name will be used for MongoDB else default Private IPs will be used | `bool` | `flase` | yes |
+| domain\_name | The custom domain name if required | `string` | `n/a` | yes (only if "custom\_domain" is set to true) |
+| ssm\_parameter\_prefix | Prefix for SSM Parameter Key Name | `string` | `MongoDB` | yes |
+
 ## Deploying the ReplicaSet:
 
 1. Clone this repository and update the variables.tf file according to your values
