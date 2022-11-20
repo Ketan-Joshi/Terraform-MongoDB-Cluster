@@ -104,12 +104,13 @@ then
   do
     echo "Retrying Cluster Setup....."
     systemctl restart mongod.service
+    sleep 5
   done
-  systemctl restart mongod.service
   until mongo < ./user_setup.js
   do
     echo "Retrying Admin User Setup....."
     systemctl restart mongod.service
+    sleep 5
   done
 fi
 
@@ -119,5 +120,6 @@ then
   do
     echo "Restarting Mongod Service....."
     systemctl restart mongod.service
+    sleep 5
   done
 fi
