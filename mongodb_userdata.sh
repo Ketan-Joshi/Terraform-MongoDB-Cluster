@@ -54,7 +54,7 @@ aws ec2 wait instance-running  --filters "Name=tag:Type,Values=primary" --region
 
 # System Settings for MongoDB Replica_Set
 PRIMARY_PRIVATE_IP=$(aws ec2 describe-instances --filters "Name=tag:Type,Values=primary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq .Reservations[0].Instances[0].PrivateIpAddress --raw-output)
-if [ "$custom_domain" = true ]
+if [ ${custom_domain} = true ]
 then
   echo "$PRIMARY_PRIVATE_IP mongo1${domain_name}" >> /etc/hosts
 fi
@@ -88,7 +88,7 @@ MONGO_NODE_TYPE=$(aws ec2 describe-tags --filters "Name=resource-id,Values=$INST
 # Executing python script to setup host and cluster-setup file
 aws ec2 describe-instances --filters "Name=tag:Type,Values=secondary" "Name=instance-state-name,Values=running" --region ${aws_region} | jq . | ./populate_hosts_file.py ${replica_set_name} ${mongo_database} ${mongo_username} ${mongo_password} ${domain_name} ${custom_domain} $PRIMARY_PRIVATE_IP $MONGO_NODE_TYPE ${aws_region} ${environment} ${ssm_parameter_prefix}
 
-if [ "$custom_domain" = true ]
+if [ ${custom_domain} = true ]
 then
   HOSTNAME=$(aws ec2 describe-instances --instance-id $INSTANCE_ID --region ${aws_region} | jq . | ./parse_instance_tags.py ${domain_name} ${custom_domain})
   hostnamectl set-hostname $HOSTNAME
