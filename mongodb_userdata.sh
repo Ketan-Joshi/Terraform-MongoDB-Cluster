@@ -99,19 +99,13 @@ systemctl start mongod.service
 
 if [ $MONGO_NODE_TYPE == "primary" ]; 
 then
-  sleep 60
-  until mongo < ./cluster_setup.js
-  do
-    echo "Retrying Cluster Setup....."
-    systemctl restart mongod.service
-    sleep 5
-  done
-  until mongo < ./user_setup.js
-  do
-    echo "Retrying Admin User Setup....."
-    systemctl restart mongod.service
-    sleep 5
-  done
+  sleep 120
+  mongo < ./cluster_setup.js
+  
+  systemctl restart mongod.service
+
+  sleep 120
+  mongo < ./user_setup.js
 fi
 
 if [ $MONGO_NODE_TYPE == "secondary" ]; 
