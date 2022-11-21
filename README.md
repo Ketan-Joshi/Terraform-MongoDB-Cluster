@@ -1,22 +1,62 @@
-# Mongo Replica Set using Terraform
+# terraform-aws-mongodb
 
+[![Lint Status](https://github.com/tothenew/terraform-aws-mongodb/workflows/Lint/badge.svg)](https://github.com/tothenew/terraform-aws-mongodb/actions)
+[![LICENSE](https://img.shields.io/github/license/tothenew/terraform-aws-mongodb)](https://github.com/tothenew/terraform-aws-mongodb/blob/master/LICENSE)
+
+The following content needed to be created and managed:
+ - Introduction
+     - Explaination of module 
+     - Intended users
+ - Resource created and managed by this module
+ - Example Usages
+
+<!-- BEGIN_TF_DOCS -->
+
+## Introduction
 This repository allows creating MongoDB ReplicaSet in AWS EC2 instances. It includes the following resources:
 
-- Jumpbox Instance:  
-    * To access our MongoDB servers
-    * To copy replication and cluster configutration files to MongoDB servers   
+- Jumpbox Instance: 
+    - To access our MongoDB servers
+    - To copy replication and cluster configutration files to MongoDB servers
 - Primary MongoDB Instance
-- Secondary MongoDB Instances (you can define the count of read replicas here. For now, we are creating 2 secondary nodes)
+- Secondary MongoDB Instances (you can define the count of read replicas here. By default, this creates 2 secondary nodes)
 
-## Prequisites:
+## Pre-Requisites
+- AWS CLI must be installed and aws-profile must be already created
+- AWS VPC must be already configured with min. 2 private subnets, 2 
+public subnets, and Nat gateway
+    - Public Subnets: Jumpbox is setup here
+    - Private Subnets: MongoDB nodes and NAT gateway
 
-1. AWS CLI must be installed and aws-profile must be already created 
-2. AWS VPC must be already configured with min. 2 private subnets, 2 public subnets, and Nat gateway
 
-- `Public Subnets`: Jumpbox is setup here
-- `Private Subnets`: MongoDB nodes and NAT gateway
 
-## Input
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.72 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.72 |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [random_string](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
+| [aws_key_pair](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource |
+| [aws_ssm_parameter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
+| [aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_iam_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_instance_profile](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
+| [aws_iam_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+
+## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
@@ -38,33 +78,11 @@ This repository allows creating MongoDB ReplicaSet in AWS EC2 instances. It incl
 | domain\_name | The custom domain name if required | `string` | `n/a` | yes (only if "custom\_domain" is set to true) |
 | ssm\_parameter\_prefix | Prefix for SSM Parameter Key Name | `string` | `MongoDB` | yes |
 
-## Deploying the ReplicaSet:
+## Authors
 
-1. Clone this repository and update the variables.tf file according to your values
+Module managed by [TO THE NEW Pvt. Ltd.](https://github.com/tothenew)
 
-2. Then, go to mongodb_module folder and update keyFile
+## License
 
-3. `terraform init`: It will initialize the provider block and the module
+Apache 2 Licensed. See [LICENSE](https://github.com/tothenew/terraform-aws-mongodb/blob/main/LICENSE) for full details.
 
-4. `terraform plan`: To list-down all the changes that the terraform will be performing
-
-5. `terraform apply`: Apply the changes required to build MongoDB ReplicaSet
-
-6. After applying the changes, wait for the ReplicaSet creation. This will take approx. 5-10 minutes
-
-## Add-Ons
-
-- This supports Authentication as well
-
-## Considerations
-
-- This is the setup for Ubuntu 20.04 (for Ubuntu 22.x, no official dependency support is there for MongoDB yet)
-- This uses host entries for DNS mapping
-    * To be switched to private DNS: `To Do`
-
-References
----
-
-[https://www.terraform.io/](https://www.terraform.io/)
-
-[https://www.mongodb.com/docs/v5.2/tutorial/expand-replica-set/](https://www.mongodb.com/docs/v5.2/tutorial/expand-replica-set/)
